@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	qr "github.com/skip2/go-qrcode"
 )
@@ -49,38 +50,38 @@ func getWindowsDownloadsPath() string {
 }
 
 func main() {
-	// url := readUserInput("Enter the URL to generate QR code for: ")
-	// filePath := readUserInput("Enter the file path (leave blank to use default): ")
+	url := readUserInput("Enter the URL to generate QR code for: ")
+	filePath := readUserInput("Enter the file path (leave blank to use default): ")
 
-	// if filePath == "" {
-	// 	filePath = getWindowsDownloadsPath()
-	// 	// Generate a default file name with current timestamp
-	// 	fileName := fmt.Sprintf("qr_code_%s.png", time.Now().Format("20060102_150405"))
-	// 	filePath = filepath.Join(filePath, fileName) // Correctly join the filePath and fileName
-	// }
+	if filePath == "" {
+		filePath = getWindowsDownloadsPath()
+		// Generate a default file name with current timestamp
+		fileName := fmt.Sprintf("qr_code_%s_%s.png", url, time.Now().Format("20060102_150405"))
+		filePath = filepath.Join(filePath, fileName) // Correctly join the filePath and fileName
+	}
 
-	// fmt.Println("Generating QR code for", url, "and saving to", filePath)
+	fmt.Println("Generating QR code for", url, "and saving to", filePath)
 
-	// b, err := generate(url)
-	// if err != nil {
-	// 	fmt.Println("Error generating QR code:", err)
-	// 	return
-	// }
-
-	// err = store(filePath, b)
-	// if err != nil {
-	// 	fmt.Println("Error saving QR code:", err)
-	// 	return
-	// }
-
-	// fmt.Println("QR code generated and saved successfully to", filePath)
-
-	domains, err := domain_check("www.VitalitySouth.com")
+	domain, err := DomainCheck(url)
 	if err != nil {
 		fmt.Println("Error checking domain:", err)
 		return
 	}
-	fmt.Println("Domains:", domains)
+
+	b, err := generate(domain)
+	if err != nil {
+		fmt.Println("Error generating QR code:", err)
+		return
+	}
+
+	err = store(filePath, b)
+	if err != nil {
+		fmt.Println("Error saving QR code:", err)
+		return
+	}
+
+	fmt.Println("QR code generated and saved successfully to", filePath)
+
 }
 
 func URLshortened(url string) (string, error) {
