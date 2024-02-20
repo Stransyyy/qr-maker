@@ -1,4 +1,4 @@
-module github.com/Stransyyy/qr-maker
+module github.com/Stransyyy/qr-maker/Program
 
 go 1.21.6
 
