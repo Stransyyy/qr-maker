@@ -27,6 +27,25 @@ func ReadUserInput(prompt string) string {
 	return ""
 }
 
+func userDownloadsPath(directory string) string {
+	user, err := user.Current()
+	if err != nil {
+		fmt.Printf("Unable to find the current user: %v\n", err)
+		os.Exit(1)
+	}
+	return filepath.Join(user.HomeDir, directory)
+}
+
+func homePath() string {
+	user, err := user.Current()
+	if err != nil {
+		fmt.Printf("Unable to find the current user: %v\n", err)
+		os.Exit(1)
+	}
+	return user.HomeDir
+
+}
+
 func GetWindowsDownloadsPath() string {
 	user, err := user.Current()
 	if err != nil {
